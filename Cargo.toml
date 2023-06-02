@@ -3,12 +3,27 @@ name = "reprisedb_load_test"
 version = "0.1.0"
 edition = "2021"
 
+[build]
+rustflags = ["--cfg", "tokio_unstable"]
+
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 clap = { version = "4.3.1", features = ["derive"] }
+console-subscriber = "0.1.9"
+flamegraph = "0.6.3"
 plotters = "0.3.4"
 rand = "0.8.5"
 #reprisedb = { git = "https://github.com/emersonmde/reprisedb", branch = "main" }
 reprisedb = { path = "../reprisedb" }
-tokio = { version = "1.28.2", features = ["full"] }
+tokio = { version = "1.28.2", features = ["full", "tracing"] }
+
+tracing = { versio = "0.1.37" }
+# opentelemetry = { version = "0.19", features = ["rt-tokio-current-thread"] }
+# opentelemetry-jaeger = { version = "0.18.0", features = ["tokio", "rt-tokio-current-thread"] }
+# tracing-opentelemetry = "0.19.0"
+# tracing-subscriber = "0.3.17"
+
+
+[profile.release]
+debug = true

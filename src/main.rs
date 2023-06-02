@@ -6,6 +6,7 @@ use std::fs::{self, File};
 use std::io::Write;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
+use std::thread::sleep;
 use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
 
@@ -13,11 +14,9 @@ const METRIC_INTERVAL: Duration = Duration::from_millis(100);
 
 use clap::Parser;
 
-/// Simple program to greet a person
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    /// Name of the person to greet
     #[arg(short, long, value_parser = parse_duration)]
     duration: Duration,
 
@@ -35,6 +34,8 @@ fn parse_duration(arg: &str) -> Result<std::time::Duration, std::num::ParseIntEr
 
 #[tokio::main]
 async fn main() {
+    // console_subscriber::init();
+
     let args = Args::parse();
     println!("Starting RepriseDB load test");
     println!("Number of tasks: {}", args.num_tasks);
@@ -152,7 +153,7 @@ async fn main() {
                 0
             };
 
-            let memtable_size = db.memtable.read().await.size();
+            let memtable_size = db.memtable.write().await.size();
 
             let read_ops_per_sec = (read_ops as f64) / elapsed_time;
             let write_ops_per_sec = (write_ops as f64) / elapsed_time;
