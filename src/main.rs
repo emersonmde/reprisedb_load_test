@@ -9,17 +9,37 @@ use std::sync::Arc;
 use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
 
-const NUM_TASKS: usize = 600;
-const DURATION: Duration = Duration::from_secs(10);
-const KEYSPACE: u64 = 100_000;
 const METRIC_INTERVAL: Duration = Duration::from_millis(100);
+
+use clap::Parser;
+
+/// Simple program to greet a person
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Name of the person to greet
+    #[arg(short, long, value_parser = parse_duration)]
+    duration: Duration,
+
+    #[arg(short, long)]
+    num_tasks: usize,
+
+    #[arg(short, long)]
+    keyspace: u64,
+}
+
+fn parse_duration(arg: &str) -> Result<std::time::Duration, std::num::ParseIntError> {
+    let seconds = arg.parse()?;
+    Ok(std::time::Duration::from_secs(seconds))
+}
 
 #[tokio::main]
 async fn main() {
+    let args = Args::parse();
     println!("Starting RepriseDB load test");
-    println!("Number of tasks: {}", NUM_TASKS);
-    println!("Duration: {} seconds", DURATION.as_secs());
-    println!("Keyspace: {}", KEYSPACE);
+    println!("Number of tasks: {}", args.num_tasks);
+    println!("Duration: {} seconds", args.duration.as_secs());
+    println!("Keyspace: {}", args.keyspace);
     println!("==========");
 
     let config = DatabaseConfigBuilder::new()
@@ -43,7 +63,7 @@ async fn main() {
     println!("t: 0.00000000 | Read Ops: 0 | Read/s: 0 | Avg Read Lat: 0 | Write Ops: 0 | Write/s: 0 | Avg Write Lat: 0 | Read Err: 0 | Write Err: 0 | MemTable Size: 0");
     let metrics = Arc::new(Mutex::new(metrics_vec));
 
-    for _ in 0..NUM_TASKS {
+    for _ in 0..args.num_tasks {
         let mut db_clone = db.clone();
         let read_ops_clone = Arc::clone(&read_ops);
         let read_latency_clone = Arc::clone(&read_latency);
@@ -56,9 +76,9 @@ async fn main() {
         let handle = tokio::spawn(async move {
             let start = start; // clone start time for this thread
             let mut rng = rand::rngs::StdRng::from_entropy();
-            while Instant::now().duration_since(start) < DURATION {
+            while Instant::now().duration_since(start) < args.duration {
                 // Generate a random key within the keyspace
-                let rand = rng.gen_range(0..KEYSPACE).to_string();
+                let rand = rng.gen_range(0..args.keyspace).to_string();
                 let key = format!("This is my key: {}", rand);
                 // Use the elapsed time as the key, every put will be sequential and no reads
                 // would succeed
@@ -111,7 +131,7 @@ async fn main() {
     let reporting_metrics = Arc::clone(&metrics);
     let reporting_task_future = async {
         let start = Instant::now();
-        while Instant::now().duration_since(start) < DURATION {
+        while Instant::now().duration_since(start) < args.duration {
             tokio::time::sleep(METRIC_INTERVAL).await;
             let elapsed_time = start.elapsed().as_secs_f64();
             let read_ops = reporting_read_ops.load(Ordering::SeqCst);
@@ -195,7 +215,9 @@ async fn main() {
         "Performed {:.2} write operations per second",
         write_ops_per_sec
     );
+    println!("Total reads: {}", total_read_ops);
     println!("Total read errors: {}", total_read_errors);
+    println!("Total writes: {}", total_read_ops);
     println!("Total write errors: {}", total_write_errors);
 
     fs::remove_dir_all("/tmp/reprisedb_load_test").expect("Failed to remove directory");
