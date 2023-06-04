@@ -1830,6 +1830,7 @@ dependencies = [
  "bloombox",
  "chrono",
  "console-subscriber",
+ "fnv",
  "prost",
  "prost-build",
  "prost-derive",
