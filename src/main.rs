@@ -89,7 +89,7 @@ async fn main() {
                 let value = value::Kind::Str(value_string);
 
                 // 50% chance to perform a read operation
-                if rng.gen_bool(0.5) {
+                if rng.gen_bool(0.1) {
                     let start_time = Instant::now();
                     match db_clone.get(&key).await {
                         Ok(_) => {
