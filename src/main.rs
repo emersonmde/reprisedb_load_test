@@ -153,7 +153,7 @@ async fn main() {
                 0
             };
 
-            let memtable_size = db.memtable.write().await.size();
+            let memtable_size = db.memtable.read().await.size();
 
             let read_ops_per_sec = (read_ops as f64) / elapsed_time;
             let write_ops_per_sec = (write_ops as f64) / elapsed_time;

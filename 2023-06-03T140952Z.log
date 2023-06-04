@@ -1,0 +1,22 @@
+2023-06-03T14:09:52.123907Z DEBUG tokio_console: args.target_addr=None args.view_options=ViewOptions { no_colors: false, lang: Some("en_US.UTF-8"), ascii_only: None, truecolor: Some(true), palette: None, toggles: ColorToggles { color_durations: None, color_terminated: None } }
+2023-06-03T14:09:52.124057Z  INFO tokio_console: using target addr target=http://127.0.0.1:6669/
+2023-06-03T14:09:52.125015Z DEBUG tokio_console::conn: connecting to=http://127.0.0.1:6669/
+2023-06-03T14:09:52.125923Z DEBUG hyper::client::connect::http: connecting to 127.0.0.1:6669
+2023-06-03T14:09:52.126592Z  WARN tokio_console::conn: error connecting error=transport error
+2023-06-03T14:09:52.126600Z DEBUG tokio_console::conn: reconnecting reconnect_in=5s
+2023-06-03T14:09:57.128755Z DEBUG hyper::client::connect::http: connecting to 127.0.0.1:6669
+2023-06-03T14:09:57.128946Z  WARN tokio_console::conn: error connecting error=transport error
+2023-06-03T14:09:57.128956Z DEBUG tokio_console::conn: reconnecting reconnect_in=5.5s
+2023-06-03T14:10:02.631552Z DEBUG hyper::client::connect::http: connecting to 127.0.0.1:6669
+2023-06-03T14:10:02.632614Z  WARN tokio_console::conn: error connecting error=transport error
+2023-06-03T14:10:02.632664Z DEBUG tokio_console::conn: reconnecting reconnect_in=6s
+2023-06-03T14:10:08.634589Z DEBUG hyper::client::connect::http: connecting to 127.0.0.1:6669
+2023-06-03T14:10:08.635489Z  WARN tokio_console::conn: error connecting error=transport error
+2023-06-03T14:10:08.635526Z DEBUG tokio_console::conn: reconnecting reconnect_in=6.5s
+2023-06-03T14:10:15.138474Z DEBUG hyper::client::connect::http: connecting to 127.0.0.1:6669
+2023-06-03T14:10:15.138979Z  WARN tokio_console::conn: error connecting error=transport error
+2023-06-03T14:10:15.139035Z DEBUG tokio_console::conn: reconnecting reconnect_in=7s
+2023-06-03T14:10:22.141256Z DEBUG hyper::client::connect::http: connecting to 127.0.0.1:6669
+2023-06-03T14:10:22.141521Z  WARN tokio_console::conn: error connecting error=transport error
+2023-06-03T14:10:22.141536Z DEBUG tokio_console::conn: reconnecting reconnect_in=7.5s
+2023-06-03T14:10:22.984573Z DEBUG tokio_console::conn: reconnecting reconnect_in=7.5s
