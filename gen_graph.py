@@ -25,7 +25,7 @@ ax2.set_ylabel('avg ops/s')
 ax2.plot(data['time'], data['read_ops_per_sec'] + data['write_ops_per_sec'], color='tab:orange', label='Avg Ops/s')
 ax2.plot(data['time'], data['read_ops_per_sec'], color='tab:olive', label='Avg Read/s')
 ax2.plot(data['time'], data['write_ops_per_sec'], color='tab:cyan', label='Avg Write/s')
-ax2.plot(data['time'], data['memtable_size'], color='tab:purple', label='Memtable Size')
+# ax2.plot(data['time'], data['memtable_size'], color='tab:purple', label='Memtable Size')
 ax2.tick_params(axis='y')
 
 # Make sure both y-axes start at 0
