@@ -1824,6 +1824,7 @@ checksum = "436b050e76ed2903236f032a59761c1eb99e1b0aead2c257922771dab1fc8c78"
 [[package]]
 name = "reprisedb"
 version = "0.1.0"
+source = "git+https://github.com/emersonmde/reprisedb?branch=main#94e28bfa8181c204c0ad2d6881e1b31e75eddb43"
 dependencies = [
  "async-trait",
  "bincode",

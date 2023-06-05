@@ -222,11 +222,11 @@ async fn main() {
     println!("Total writes: {}", total_read_ops);
     println!("Total write errors: {}", total_write_errors);
 
-    fs::remove_dir_all("/tmp/reprisedb_load_test").expect("Failed to remove directory");
-
     write_metrics_to_file(metrics)
         .await
         .expect("Failed to write metrics to file");
+
+    fs::remove_dir_all("/tmp/reprisedb_load_test").expect("Failed to remove directory");
 }
 
 pub async fn write_metrics_to_file(
