@@ -6,7 +6,6 @@ use std::fs::{self, File};
 use std::io::Write;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
-use std::thread::sleep;
 use std::time::{Duration, Instant};
 use tokio::sync::Mutex;
 
@@ -45,7 +44,9 @@ async fn main() {
 
     let config = DatabaseConfigBuilder::new()
         .sstable_dir("/tmp/reprisedb_load_test".to_string())
-        .memtable_size_target(4 * 1024 * 1024)
+        // .memtable_size_target(4 * 1024 * 1024)
+        .memtable_size_target(1 * 1024 * 1024)
+        .compaction_interval(Duration::from_millis(800))
         .build();
     let db = Database::new(config).await.unwrap();
     let start = Instant::now();
@@ -80,12 +81,12 @@ async fn main() {
             while Instant::now().duration_since(start) < args.duration {
                 // Generate a random key within the keyspace
                 let rand = rng.gen_range(0..args.keyspace).to_string();
-                let key = format!("This is my key: {}", rand);
+                let key = format!("key{}", rand);
                 // Use the elapsed time as the key, every put will be sequential and no reads
                 // would succeed
                 // let key = start.elapsed().as_micros().to_string();
                 // let value = value::Kind::Int(rng.gen());
-                let value_string = format!("This is my value: {}", rand);
+                let value_string = format!("value{}", rand);
                 let value = value::Kind::Str(value_string);
 
                 // 50% chance to perform a read operation
